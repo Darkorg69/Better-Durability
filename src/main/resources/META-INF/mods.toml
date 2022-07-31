@@ -1,29 +1,32 @@
 modLoader = "javafml"
-loaderVersion = "[39,)"
+loaderVersion = "[42,)"
 license = "MIT License"
 issueTrackerURL = "https://github.com/darkorg69/betterdurability/issues"
 
 [[mods]]
 modId = "betterdurability"
-version = "1.18-1.0.0"
-displayName = "BetterDurability"
+version = "${file.jarVersion}"
+displayName = "Better Durability"
 #updateJSONURL=""
-displayURL = "https://www.curseforge.com/minecraft/mc-mods/betterdurability"
-logoFile = "betterdurability.png"
-credits = "Thanks for this mod goes to Java and the Forge Team"
-authors = "Darkorg"
-description = '''A mod to prevent your precious tools from breaking!'''
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
+logoFile = "examplemod.png" #optional
+# A text field displayed in the mod UI
+credits = "Thanks for this example mod goes to Java" #optional
+# A text field displayed in the mod UI
+authors = "Love, Cheese and small house plants" #optional
+#displayTest="MATCH_VERSION"
+description = ''''''
 
 [[dependencies.betterdurability]]
 modId = "forge"
 mandatory = true
-versionRange = "[39,)"
+versionRange = "[42,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.betterdurability]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18,1.19)"
+versionRange = "[1.19.1,1.20)"
 ordering = "NONE"
 side = "BOTH"

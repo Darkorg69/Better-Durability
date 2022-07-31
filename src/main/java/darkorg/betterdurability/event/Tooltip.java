@@ -2,7 +2,6 @@ package darkorg.betterdurability.event;
 
 import darkorg.betterdurability.util.StackUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,7 +18,7 @@ public class Tooltip {
         ItemStack stack = event.getItemStack();
 
         if (StackUtil.isBroken(stack)) {
-            tooltip.add(0, new TranslatableComponent("tooltip.betterdurability.broken"));
+            tooltip.add(0, Component.translatable("tooltip.betterdurability.broken"));
         }
     }
 }

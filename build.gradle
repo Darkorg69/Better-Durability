@@ -1,45 +1,24 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
-}
 plugins {
     id 'eclipse'
     id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-
-
-version = '1.18-1.0.0'
-group = 'darkorg.betterdurability'
-archivesBaseName = 'betterdurability'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-minecraft {
-    mappings channel: 'parchment', version: '2022.07.17-1.18.2'
+version = "${forge_ver}-${mod_ver}"
+group = "${mod_author}.${mod_id}"
+archivesBaseName = "${mod_id}"
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+minecraft {
+    mappings channel: 'official', version: mappings_ver
 
     runs {
         client {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'betterdurability'
-
             mods {
-                betterdurability {
+                mod_id {
                     source sourceSets.main
                 }
             }
@@ -47,15 +26,8 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'betterdurability'
-
             mods {
-                betterdurability {
+                mod_id {
                     source sourceSets.main
                 }
             }
@@ -64,14 +36,8 @@ minecraft {
         gameTestServer {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'betterdurability'
-
             mods {
-                betterdurability {
+                mod_id {
                     source sourceSets.main
                 }
             }
@@ -80,14 +46,10 @@ minecraft {
         data {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'betterdurability', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                betterdurability {
+                mod_id {
                     source sourceSets.main
                 }
             }
@@ -98,33 +60,21 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        name = "ModMaven"
-        url = "https://modmaven.dev"
-    }
+
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.68'
-
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2-common-api:10.1.3.240")
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2-forge-api:10.1.3.240")
-
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2-forge:10.1.3.240")
+    minecraft "net.minecraftforge:forge:${mc_ver}-${forge_ver}"
 }
 
 jar {
     manifest {
-        attributes(["Specification-Title"     : "BetterDurability",
-                    "Specification-Vendor"    : "Darkorg",
-                    "Specification-Version"   : "1.18-1.0.0",
+        attributes(["Specification-Title"     : "${mod_display_name}",
+                    "Specification-Vendor"    : "${mod_author}",
+                    "Specification-Version"   : "${mod_ver}",
                     "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : project.jar.archiveVersion,
-                    "Implementation-Vendor"   : "Darkorg",
+                    "Implementation-Version"  : "${mod_ver}",
+                    "Implementation-Vendor"   : "${mod_author}",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
     }
 }

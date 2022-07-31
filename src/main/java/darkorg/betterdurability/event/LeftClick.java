@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class LeftClick {
     @SubscribeEvent
     public void onBreakSpeed(PlayerEvent.BreakSpeed event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         BlockState state = event.getState();
         ItemStack stack = player.getMainHandItem();
 
@@ -24,7 +24,7 @@ public class LeftClick {
 
     @SubscribeEvent
     public void onAttackEntity(AttackEntityEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         ItemStack stack = player.getMainHandItem();
 
         if (!StackUtil.canLeftClickEntity(stack)) {
