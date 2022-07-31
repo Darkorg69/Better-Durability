@@ -6,7 +6,7 @@ plugins {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-version = "${forge_ver}-${mod_ver}"
+version = "${mc_ver}-${mod_ver}"
 group = "${mod_author}.${mod_id}"
 archivesBaseName = "${mod_id}"
 
