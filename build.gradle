@@ -2,16 +2,17 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 version = "${mc_ver}-${mod_ver}"
 group = "${mod_author}.${mod_id}"
-archivesBaseName = "${mod_id}"
+archivesBaseName = mod_id
 
 minecraft {
-    mappings channel: 'official', version: mappings_ver
+    mappings channel: 'parchment', version: mappings_ver
 
     runs {
         client {
@@ -26,28 +27,6 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            mods {
-                mod_id {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run')
-
-            mods {
-                mod_id {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
             mods {
                 mod_id {
                     source sourceSets.main
@@ -69,30 +48,17 @@ dependencies {
 
 jar {
     manifest {
-        attributes(["Specification-Title"     : "${mod_display_name}",
-                    "Specification-Vendor"    : "${mod_author}",
-                    "Specification-Version"   : "${mod_ver}",
+        attributes(["Specification-Title"     : mod_display_name,
+                    "Specification-Vendor"    : mod_author,
+                    "Specification-Version"   : "${mc_ver}-${mod_ver}",
                     "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : "${mod_ver}",
-                    "Implementation-Vendor"   : "${mod_author}",
+                    "Implementation-Version"  : "${mc_ver}-${mod_ver}",
+                    "Implementation-Vendor"   : mod_author,
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
     }
 }
 
 jar.finalizedBy('reobfJar')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
-    }
-}
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
