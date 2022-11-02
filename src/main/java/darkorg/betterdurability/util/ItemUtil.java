@@ -1,6 +1,6 @@
 package darkorg.betterdurability.util;
 
-import net.minecraft.world.item.*;
+import net.minecraft.item.*;
 
 public class ItemUtil {
     public static boolean isTool(Item item) {
