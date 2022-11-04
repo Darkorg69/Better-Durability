@@ -2,8 +2,8 @@ package darkorg.betterdurability.event;
 
 import darkorg.betterdurability.BetterDurability;
 import darkorg.betterdurability.util.StackUtil;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -17,6 +17,7 @@ public class ForgeClientEvents {
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         List<ITextComponent> tooltip = event.getToolTip();
+
         if (StackUtil.isBroken(event.getItemStack())) {
             tooltip.add(0, new TranslationTextComponent("tooltip.betterdurability.broken").withStyle(TextFormatting.RED));
         }

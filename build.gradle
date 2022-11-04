@@ -16,7 +16,7 @@ version = "${minecraft_version}-${mod_version}"
 group = "${mod_author}.${modId}"
 archivesBaseName = modId
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     mappings channel: 'parchment', version: mappings_version
@@ -57,6 +57,10 @@ minecraft {
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+
+}
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
