@@ -17,7 +17,6 @@ public class ForgeClientEvents {
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         List<ITextComponent> tooltip = event.getToolTip();
-
         if (StackUtil.isBroken(event.getItemStack())) {
             tooltip.add(0, new TranslationTextComponent("tooltip.betterdurability.broken").withStyle(TextFormatting.RED));
         }

@@ -12,7 +12,6 @@ public class ModEvents {
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
-
         generator.addProvider(new ModLanguageProvider(generator, BetterDurability.MOD_ID, "en_us"));
     }
 }
