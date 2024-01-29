@@ -14,5 +14,6 @@ public class ModEvents {
         DataGenerator generator = event.getGenerator();
 
         generator.addProvider(new ModLanguageProvider(generator, BetterDurability.MOD_ID, "en_us"));
+        generator.addProvider(new ModLanguageProvider(generator, BetterDurability.MOD_ID, "zh_cn"));
     }
 }
