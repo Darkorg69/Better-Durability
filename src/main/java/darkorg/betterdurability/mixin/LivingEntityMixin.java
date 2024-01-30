@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
@@ -70,6 +71,22 @@ public abstract class LivingEntityMixin {
                 cir.setReturnValue(false);
                 cir.cancel();
             }
+        }
+    }
+
+    // inject the Soul Speed Checking
+    @ModifyArg(method = "tryAddSoulSpeed()V", index = 0,
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;hurtAndBreak(ILnet/minecraft/entity/LivingEntity;Ljava/util/function/Consumer;)V"))
+    private int modifySoulSpeedCheck_preventBreak(int pAmount) {
+        ItemStack bootStack = this.getItemBySlot(EquipmentSlotType.FEET);
+        return StackUtil.calculateArmorReducedDamage(bootStack, pAmount);
+    }
+    @Inject(method = "tryAddSoulSpeed()V", cancellable = true,
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/attributes/ModifiableAttributeInstance;addTransientModifier(Lnet/minecraft/entity/ai/attributes/AttributeModifier;)V"))
+    private void modifySoulSpeedCheck_discardEffect(CallbackInfo ci) {
+        ItemStack bootStack = this.getItemBySlot(EquipmentSlotType.FEET);
+        if (!StackUtil.canArmorProtect(bootStack)) {
+            ci.cancel();
         }
     }
 }
