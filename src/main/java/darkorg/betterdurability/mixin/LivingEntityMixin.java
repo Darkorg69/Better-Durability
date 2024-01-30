@@ -3,6 +3,8 @@ package darkorg.betterdurability.mixin;
 import darkorg.betterdurability.util.ItemUtil;
 import darkorg.betterdurability.util.StackUtil;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
@@ -11,7 +13,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 
 @Mixin(LivingEntity.class)
@@ -38,28 +39,39 @@ public abstract class LivingEntityMixin {
     // inject the Armor Checking
     // Fun fact: helmet can be hurt by ANVIL and FALLING_BLOCK damage, which does not bypass armor,
     //           so helmet will be double-damaged in such occasions
-    @ModifyArgs(method = "getDamageAfterArmorAbsorb(Lnet/minecraft/util/DamageSource;F)F",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/CombatRules;getDamageAfterAbsorb(FFF)F"))
-    private void modifyArmorCheck_discardDefense(Args args) {
-        float pTotalArmor = args.get(1);
-        float pToughnessAttribute = args.get(2);
-
+    @Inject(method = "getAttributeValue(Lnet/minecraft/entity/ai/attributes/Attribute;)D", cancellable = true,
+            at = @At(value = "TAIL"))
+    private void modifyArmorCheck_discardToughness(Attribute pAttribute, CallbackInfoReturnable<Double> cir) {
+        if (pAttribute == Attributes.ARMOR_TOUGHNESS) {
+            double result = cir.getReturnValue();
+            float invalidToughness = 0;
+            for (EquipmentSlotType eqSlot: StackUtil.ARMOR_SLOTS) {
+                ItemStack armorStack = this.getItemBySlot(eqSlot);
+                if (armorStack.getItem() instanceof ArmorItem armorItem) {
+                    if (!StackUtil.canArmorProtect(armorStack)) {
+                        invalidToughness += armorItem.getToughness();
+                    }
+                }
+            }
+            result -= invalidToughness;
+            cir.setReturnValue(result);
+        }
+    }
+    @Inject(method = "getArmorValue()I", cancellable = true,
+            at = @At(value = "TAIL"))
+    private void modifyArmorCheck_discardDefense(CallbackInfoReturnable<Integer> cir) {
+        int result = cir.getReturnValue();
         int invalidDefense = 0;
-        float invalidToughness = 0;
         for (EquipmentSlotType eqSlot: StackUtil.ARMOR_SLOTS) {
             ItemStack armorStack = this.getItemBySlot(eqSlot);
             if (armorStack.getItem() instanceof ArmorItem armorItem) {
                 if (!StackUtil.canArmorProtect(armorStack)) {
                     invalidDefense += armorItem.getDefense();
-                    invalidToughness += armorItem.getToughness();
                 }
             }
         }
-        pTotalArmor -= (float)invalidDefense;
-        pToughnessAttribute -= invalidToughness;
-
-        args.set(1, pTotalArmor);
-        args.set(2, pToughnessAttribute);
+        result -= invalidDefense;
+        cir.setReturnValue(result);
     }
 
     // inject the Shield Checking
