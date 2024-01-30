@@ -1,0 +1,12 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "darkorg.betterdurability.mixin",
+  "refmap": "betterdurability.refmap.json",
+  "mixins": [
+    "LivingEntityMixin",
+    "PlayerEntityMixin",
+    "PlayerInventoryMixin"
+  ],
+  "client": [],
+  "server": []
+}

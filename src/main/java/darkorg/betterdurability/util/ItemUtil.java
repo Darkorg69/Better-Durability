@@ -3,20 +3,8 @@ package darkorg.betterdurability.util;
 import net.minecraft.item.*;
 
 public class ItemUtil {
-    public static boolean isBow(Item item) {
-        return item instanceof BowItem;
-    }
-
-    public static boolean isCrossbow(Item item) {
-        return item instanceof CrossbowItem;
-    }
-
-    public static boolean isFishingRod(Item item) {
-        return item instanceof FishingRodItem;
-    }
-
-    public static boolean isFlintAndSteel(Item item) {
-        return item instanceof FlintAndSteelItem;
+    public static boolean isTool(Item item) {
+        return item instanceof AxeItem || item instanceof PickaxeItem || item instanceof ShovelItem;
     }
 
     public static boolean isHoe(Item item) {
@@ -31,11 +19,31 @@ public class ItemUtil {
         return item instanceof SwordItem;
     }
 
-    public static boolean isTool(Item item) {
-        return item instanceof AxeItem || item instanceof PickaxeItem || item instanceof ShovelItem;
+    public static boolean isFishingRod(Item item) {
+        return item instanceof FishingRodItem;
+    }
+
+    public static boolean isFlintAndSteel(Item item) {
+        return item instanceof FlintAndSteelItem;
+    }
+
+    public static boolean isBow(Item item) {
+        return item instanceof BowItem;
     }
 
     public static boolean isTrident(Item item) {
         return item instanceof TridentItem;
+    }
+
+    public static boolean isCrossbow(Item item) {
+        return item instanceof CrossbowItem;
+    }
+
+    public static boolean isArmor(Item item) {
+        return item instanceof ArmorItem;
+    }
+
+    public static boolean isShield(Item item) {
+        return item == Items.SHIELD;
     }
 }
