@@ -1,7 +1,7 @@
 package darkorg.betterdurability.event;
 
 import darkorg.betterdurability.BetterDurability;
-import darkorg.betterdurability.util.StackUtil;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -13,44 +13,56 @@ public class ForgeEventsHandler {
     @SubscribeEvent
     public static void onLeftClickBlock(PlayerEvent.BreakSpeed event) {
         if (event.getState().getBlock().getSpeedFactor() != 0.0F) {
-            if (StackUtil.isInvalidLeftClickBlock(event.getPlayer().getMainHandItem())) {
-                event.setCanceled(true);
-            }
+            ItemStack targetStack = event.getPlayer().getMainHandItem();
+            if (!targetStack.isDamageableItem()) return;
+            boolean canFunction = ItemDurabilityEvent.ItemUsage.check(targetStack,
+                    ItemDurabilityEvent.ItemUsage.Type.TOOL_LEFT_CLICK_BLOCK);
+            if (!canFunction) { event.setCanceled(true); }
         }
     }
 
     @SubscribeEvent
     public static void onLeftClickEntity(AttackEntityEvent event) {
-        if (StackUtil.isInvalidLeftClickEntity(event.getPlayer().getMainHandItem())) {
-            event.setCanceled(true);
-        }
+        ItemStack targetStack = event.getPlayer().getMainHandItem();
+        if (!targetStack.isDamageableItem()) return;
+        boolean canFunction = ItemDurabilityEvent.ItemUsage.check(targetStack,
+                ItemDurabilityEvent.ItemUsage.Type.TOOL_LEFT_CLICK_ENTITY);
+        if (!canFunction) { event.setCanceled(true); }
     }
 
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        if (StackUtil.isInvalidRightClickItem(event.getItemStack())) {
-            event.setCanceled(true);
-        }
+        ItemStack targetStack = event.getItemStack();
+        if (!targetStack.isDamageableItem()) return;
+        boolean canFunction = ItemDurabilityEvent.ItemUsage.check(targetStack,
+                ItemDurabilityEvent.ItemUsage.Type.TOOL_RIGHT_CLICK_ITEM);
+        if (!canFunction) { event.setCanceled(true); }
     }
 
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (StackUtil.isInvalidRightClickBlock(event.getItemStack())) {
-            event.setCanceled(true);
-        }
+        ItemStack targetStack = event.getItemStack();
+        if (!targetStack.isDamageableItem()) return;
+        boolean canFunction = ItemDurabilityEvent.ItemUsage.check(targetStack,
+                ItemDurabilityEvent.ItemUsage.Type.TOOL_RIGHT_CLICK_BLOCK);
+        if (!canFunction) { event.setCanceled(true); }
     }
 
     @SubscribeEvent
     public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
-        if (StackUtil.isInvalidRightClickEntity(event.getItemStack())) {
-            event.setCanceled(true);
-        }
+        ItemStack targetStack = event.getItemStack();
+        if (!targetStack.isDamageableItem()) return;
+        boolean canFunction = ItemDurabilityEvent.ItemUsage.check(targetStack,
+                ItemDurabilityEvent.ItemUsage.Type.TOOL_RIGHT_CLICK_ENTITY);
+        if (!canFunction) { event.setCanceled(true); }
     }
 
     @SubscribeEvent
     public static void onRightClickEntitySpecific(PlayerInteractEvent.EntityInteractSpecific event) {
-        if (StackUtil.isInvalidRightClickEntity(event.getItemStack())) {
-            event.setCanceled(true);
-        }
+        ItemStack targetStack = event.getItemStack();
+        if (!targetStack.isDamageableItem()) return;
+        boolean canFunction = ItemDurabilityEvent.ItemUsage.check(targetStack,
+                ItemDurabilityEvent.ItemUsage.Type.TOOL_RIGHT_CLICK_ENTITY);
+        if (!canFunction) { event.setCanceled(true); }
     }
 }

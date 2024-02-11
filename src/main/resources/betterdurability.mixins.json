@@ -3,9 +3,8 @@
   "package": "darkorg.betterdurability.mixin",
   "refmap": "betterdurability.refmap.json",
   "mixins": [
+    "vanilla.ItemStackMixin",
     "vanilla.LivingEntityMixin",
-    "vanilla.PlayerEntityMixin",
-    "vanilla.PlayerInventoryMixin",
     "vanilla.ThornsEnchantmentMixin"
   ],
   "client": [],
