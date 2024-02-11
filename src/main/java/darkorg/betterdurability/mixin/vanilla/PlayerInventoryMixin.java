@@ -1,4 +1,4 @@
-package darkorg.betterdurability.mixin;
+package darkorg.betterdurability.mixin.vanilla;
 
 import darkorg.betterdurability.util.StackUtil;
 import net.minecraft.entity.player.PlayerInventory;

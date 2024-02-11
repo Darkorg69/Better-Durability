@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = BetterDurability.MOD_ID, value = Dist.CLIENT)
-public class ForgeClientEvents {
+public class ForgeClientEventsHandler {
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         List<ITextComponent> tooltip = event.getToolTip();

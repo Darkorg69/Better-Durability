@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = BetterDurability.MOD_ID)
-public class ForgeEvents {
+public class ForgeEventsHandler {
     @SubscribeEvent
     public static void onLeftClickBlock(PlayerEvent.BreakSpeed event) {
         if (event.getState().getBlock().getSpeedFactor() != 0.0F) {
