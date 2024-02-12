@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Set;
 
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = BetterDurability.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConfigurationHandler {
-    public static ForgeConfigSpec COMMON_CONFIG;
+    public static ForgeConfigSpec SERVER_CONFIG;
 
     public static final String CATEGORY_BLACKLISTS = "blacklists";
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> DISABLED_CATEGORY_NAMES;
@@ -29,22 +29,23 @@ public class ConfigurationHandler {
     public static final Set<Item> BLACKLISTED_ITEMS = new HashSet<>();
 
     static {
-        ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+        ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
-        COMMON_BUILDER.comment("Blacklist things, loved by server owners ;)").push(CATEGORY_BLACKLISTS);
-        DISABLED_CATEGORY_NAMES = COMMON_BUILDER.comment("List of disabled damage protection categories. Available: TOOL, ARMOR, SHIELD.")
+        SERVER_BUILDER.comment("Blacklist things, loved by server owners ;)").push(CATEGORY_BLACKLISTS);
+        DISABLED_CATEGORY_NAMES = SERVER_BUILDER.comment("List of disabled damage protection categories. Available: TOOL, ARMOR, SHIELD.")
                 .defineList("disabledCategoryNames", ImmutableList.of(), obj -> true);
-        DISABLED_TYPE_NAMES = COMMON_BUILDER.comment("List of disabled damage protection types. Available: AXE, PICKAXE, SHOVEL, HOE, SHEARS, SWORD, FISHING_ROD, FLINT_AND_STEEL, BOW, TRIDENT, CROSSBOW, HELMET, CHESTPLATE, LEGGINGS, BOOTS, SHIELD.")
+        DISABLED_TYPE_NAMES = SERVER_BUILDER.comment("List of disabled damage protection types. Available: AXE, PICKAXE, SHOVEL, HOE, SHEARS, SWORD, FISHING_ROD, FLINT_AND_STEEL, BOW, TRIDENT, CROSSBOW, HELMET, CHESTPLATE, LEGGINGS, BOOTS, SHIELD.")
                 .defineList("disabledTypeNames", ImmutableList.of(), obj -> true);
-        BLACKLISTED_ITEM_IDS = COMMON_BUILDER.comment("List of blacklisted items. Format is modId:itemId, modId can be omitted for vanilla.")
+        BLACKLISTED_ITEM_IDS = SERVER_BUILDER.comment("List of blacklisted items. Format is modId:itemId, modId can be omitted for vanilla.")
                 .defineList("blacklistedItemIds", ImmutableList.of(), obj -> true);
-        COMMON_BUILDER.pop();
+        SERVER_BUILDER.pop();
 
-        COMMON_CONFIG = COMMON_BUILDER.build();
+        SERVER_CONFIG = SERVER_BUILDER.build();
     }
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading configEvent) {
+        BetterDurability.LOGGER.info("Loading config ...");
         loadEnumList(VanillaDamageableType.Category.class, DISABLED_CATEGORY_NAMES.get(), DISABLED_CATEGORIES);
         loadEnumList(VanillaDamageableType.class, DISABLED_TYPE_NAMES.get(), DISABLED_TYPES);
         loadItemIdList(BLACKLISTED_ITEM_IDS.get(), BLACKLISTED_ITEMS);
@@ -52,6 +53,7 @@ public class ConfigurationHandler {
 
     @SubscribeEvent
     public static void onReload(final ModConfig.Reloading configEvent) {
+        BetterDurability.LOGGER.info("Reloading config ...");
         reloadEnumList(VanillaDamageableType.Category.class, DISABLED_CATEGORY_NAMES.get(), DISABLED_CATEGORIES);
         reloadEnumList(VanillaDamageableType.class, DISABLED_TYPE_NAMES.get(), DISABLED_TYPES);
         reloadItemIdList(BLACKLISTED_ITEM_IDS.get(), BLACKLISTED_ITEMS);

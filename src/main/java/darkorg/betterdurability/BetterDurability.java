@@ -1,6 +1,7 @@
 package darkorg.betterdurability;
 
 import darkorg.betterdurability.setup.ConfigurationHandler;
+import darkorg.betterdurability.util.NaiveLoggerWrapper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -11,10 +12,11 @@ import org.apache.logging.log4j.Logger;
 @Mod(BetterDurability.MOD_ID)
 public class BetterDurability {
     public static final String MOD_ID = "betterdurability";
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final NaiveLoggerWrapper LOGGER = new NaiveLoggerWrapper(LogManager.getLogger())
+            .withPrefix("[Better Durability] ");
 
     public BetterDurability() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigurationHandler.COMMON_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigurationHandler.SERVER_CONFIG);
         MinecraftForge.EVENT_BUS.register(this);
     }
 }
